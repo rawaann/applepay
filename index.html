@@ -75,7 +75,7 @@
                 console.log(JSON.stringify(myApplePayParams))
         
                 // Call the PayConex API to fetch a payment session object
-                fetch(`https://api-cert.payconex.net/api/v1/apple_pay/${myMerchantId}/get_apple_pay_session`, {
+                fetch('https://applepay-woad.vercel.app/merchant-session/new', {
                     method: 'POST',
                     headers: new Headers({'content-type': 'application/json'}),
                     body: JSON.stringify(myApplePayParams)
