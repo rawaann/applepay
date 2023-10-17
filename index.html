@@ -80,6 +80,9 @@
                 }).then(function(json) {
                   session.completeMerchantValidation(json.response)
                 })
+                .catch(function(error) {
+                  console.log(error)
+                })
             };
             // Attach a payment authorized callback
             // This is the function that will be called after the user authenticates
