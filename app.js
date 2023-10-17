@@ -25,7 +25,7 @@ app.post('/apple_pay_session', function(req, res) {
       },
     };
 
-    request.post(options, function(error, response, body) {
+    req.post(options, function(error, response, body) {
         if (body) {
           // Apple returns a payload with `displayName`, but passing this
           // to `completeMerchantValidation` causes it to error.
