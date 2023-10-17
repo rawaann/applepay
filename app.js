@@ -15,7 +15,7 @@ app.get('/', function(req,res){
     res.sendFile(__dirname + "/index.html")
 })
 
-app.get('/apple_pay_session', function(req, res) {
+app.get('/applepaysession', function(req, res) {
     var uri = req.query.validationURL || 'https://apple-pay-gateway-cert.apple.com/paymentservices/startSession';
     console.log(uri);
     var options = {
