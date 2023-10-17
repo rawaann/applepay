@@ -65,33 +65,7 @@
             // Create the session
             session = new ApplePaySession(3, payData);
             // Attach a validation callback
-            session.onvalidatemerchant = event => {
-                const myMerchantId = "180000000742";
-                const myApplePayParams = {
-                    display_name: 'Test Display Name',
-                    referrer: referringUrl
-                };
-                
-                console.log(JSON.stringify(myApplePayParams))
-        
-                // Call the PayConex API to fetch a payment session object
-                fetch(`https://api-cert.payconex.net/api/v1/apple_pay/${myMerchantId}/get_apple_pay_session`, {
-                    method: 'POST',
-                    headers: new Headers({'content-type': 'application/json'}),
-                    body: JSON.stringify(myApplePayParams)
-                })
-                    .then(res => res.json()) // Parse response as JSON.
-                    .then(merchantSession => {
-                        //Log the session data to the console.
-                        console.log(merchantSession)
-        
-                        // Pass the session object to Apple
-                        session.completeMerchantValidation(merchantSession);
-                    })
-                    .catch(err => {
-                        console.error("Error fetching merchant session", err);
-                    });
-            };
+            
             // Attach a payment authorized callback
             // This is the function that will be called after the user authenticates
             session.onpaymentauthorized = applePayment => {
