@@ -75,6 +75,7 @@
                     validation_url: event.validationURL
                   })
                 }).then(function(response) {
+                    console.log(response);
                   return response.json()
                 }).then(function(json) {
                   session.completeMerchantValidation(json.response)
