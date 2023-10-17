@@ -1,7 +1,7 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-// const express = require('express')
-// const bodyParser = require('body-parser')
+// import expres 'express';
+// import bodyParser from 'body-parser';
+const express = require('express')
+const bodyParser = require('body-parser')
 const app = express();
 
 app.use(bodyParser.urlencoded({extended : true}))
