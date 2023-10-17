@@ -13,7 +13,7 @@ app.get('/', function(req,res){
     res.sendFile(__dirname + "/index.html")
 })
 
-app.get('/merchant-session/new', function(req, res) {
+app.post('apple_pay_session', function(req, res) {
     var uri = req.query.validationURL || 'https://apple-pay-gateway-cert.apple.com/paymentservices/startSession';
   
     var options = {
@@ -24,12 +24,8 @@ app.get('/merchant-session/new', function(req, res) {
         displayName: 'Testing Apple Pay'
       },
   
-      agentOptions: {
-        cert: cert,
-        key: cert
-      }
     };
-
+});
 app.post('/', function(req, res){
     
 })

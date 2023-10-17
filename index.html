@@ -61,33 +61,23 @@
             // Create the session
             session = new ApplePaySession(3, payData);
             // Attach a validation callback
-            session.onvalidatemerchant = event => {
-                console.log(event.validationURL);
-                const myMerchantId = "180000000742";
-                const myApplePayParams = {
-                    displayName: 'Test Display Name',
-                    domainName: referringUrl
-                };
-                
-                console.log(JSON.stringify(myApplePayParams))
+            session.onvalidatemerchant = function(event) {
+                var merchantSessionUrl = 'https://applepay-woad.vercel.app/apple_pay_session'
         
-                // Call the PayConex API to fetch a payment session object
-                fetch('https://applepay-woad.vercel.app/merchant-session/new', {
-                    method: 'POST',
-                    headers: new Headers({'content-type': 'application/json'}),
-                    body: JSON.stringify(myApplePayParams)
+                fetch(merchantSessionUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    initiative_context: window.location.hostname,
+                    validation_url: event.validationURL
+                  })
+                }).then(function(response) {
+                  return response.json()
+                }).then(function(json) {
+                  session.completeMerchantValidation(json.response)
                 })
-                    .then(res => console.log(res)) // Parse response as JSON.
-                    .then(merchantSession => {
-                        //Log the session data to the console.
-                        console.log(merchantSession)
-        
-                        // Pass the session object to Apple
-                        session.completeMerchantValidation(merchantSession);
-                    })
-                    .catch(err => {
-                        console.error("Error fetching merchant session", err);
-                    });
             };
             // Attach a payment authorized callback
             // This is the function that will be called after the user authenticates
