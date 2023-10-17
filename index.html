@@ -61,7 +61,7 @@
             session = new ApplePaySession(3, payData);
             // Attach a validation callback
             session.onvalidatemerchant = function(event) {
-                var merchantSessionUrl = 'https://applepay-woad.vercel.app/apple_pay_session'
+                var merchantSessionUrl = 'https://'+window.location.hostname+'/apple_pay_session'
                 console.log(merchantSessionUrl);
         
                 fetch(merchantSessionUrl, {
