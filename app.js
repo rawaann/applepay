@@ -14,21 +14,9 @@ app.get('/', function(req,res){
 })
 
 app.get('/merchant-session/new', function(req, res) {
-    var uri = req.query.validationURL || 'https://apple-pay-gateway-cert.apple.com/paymentservices/startSession';
-  
-    var options = {
-      uri: uri,
-      json: {
-        merchantIdentifier: 'merchant.boubyantakaful.pay',
-        domainName: 'applepay-woad.vercel.app',
-        displayName: 'Boubyan Takaful'
-      },
-  
-      agentOptions: {
-        cert: cert,
-        key: cert
-      }
-    };
+    const merchantSessionPromise = fetch("/authorizeMerchant")
+    .then((res)=>{return res.json()})
+    .catch((err)=>{console.log(err)})
 });
 
 app.post('/', function(req, res){
