@@ -80,7 +80,7 @@
                     headers: new Headers({'content-type': 'application/json'}),
                     body: JSON.stringify(myApplePayParams)
                 })
-                    .then(res => res.json()) // Parse response as JSON.
+                    .then(res => console.log(res)) // Parse response as JSON.
                     .then(merchantSession => {
                         //Log the session data to the console.
                         console.log(merchantSession)
