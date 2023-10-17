@@ -15,7 +15,7 @@ app.get('/', function(req,res){
 
 app.post('apple_pay_session', function(req, res) {
     var uri = req.query.validationURL || 'https://apple-pay-gateway-cert.apple.com/paymentservices/startSession';
-  
+    console.log(uri);
     var options = {
       uri: uri,
       json: {
@@ -23,8 +23,18 @@ app.post('apple_pay_session', function(req, res) {
         domainName: 'merchant.boubyantakaful.pay',
         displayName: 'Testing Apple Pay'
       },
-  
     };
+
+    request.post(options, function(error, response, body) {
+        if (body) {
+          // Apple returns a payload with `displayName`, but passing this
+          // to `completeMerchantValidation` causes it to error.
+          console.log(body);
+          delete body.displayName;
+        }
+    
+        res.send(body);
+      });
 });
 app.post('/', function(req, res){
     
