@@ -15,7 +15,7 @@ app.get('/', function(req,res){
 
 app.get('/merchant-session/new', function(req, res) {
     const merchantSessionPromise = fetch("/authorizeMerchant")
-    .then((res)=>{return res.json()})
+    .then((res)=>{return res})
     .catch((err)=>{console.log(err)})
 });
 
