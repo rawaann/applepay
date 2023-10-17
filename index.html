@@ -1,0 +1,121 @@
+<head>
+    <title>
+        Analysis of Homophones and Homographs
+    </title>
+    <script src="https://applepay.cdn-apple.com/jsapi/v1.1.0/apple-pay-sdk.js"></script>
+</head>
+
+<body>
+    <style>
+        apple-pay-button {
+          --apple-pay-button-width: 140px;
+          --apple-pay-button-height: 30px;
+          --apple-pay-button-border-radius: 5px;
+          --apple-pay-button-padding: 5px 0px;
+        }
+    </style>
+    <apple-pay-button buttonstyle="black" type="buy" locale="en-US" onclick="doApplePay();"></apple-pay-button>
+    <script>
+          // Create a variable to store the Apple Pay Version supported by the browser.
+          var applePayVersion;
+          // Create a string to store the referrer URL (will be used in Apple Pay functions)
+          var referringUrl = location.host
+    
+          if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+              document.getElementById('Apple-pay-supported').style.display = "none";
+              document.getElementById('apple-pay-button').style.display = "inline-block";
+              for (var i=15; i>0; i--){
+                  if (ApplePaySession.supportsVersion(i)){
+                      applePayVersion = i;
+                      break;
+                  }
+              }
+          }
+          else {
+              document.getElementById('Apple-pay-supported').innerHTML = "Apple Pay is not supported."
+          }
+          function doApplePay(){
+            // The data needed to set up the session
+            // see https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentrequest
+            const payData = {
+                countryCode: 'US',
+                currencyCode: 'USD',
+                supportedNetworks: [
+                    "visa",
+                    "masterCard",
+                    "amex",
+                    "discover"
+                ],
+                merchantCapabilities:  [
+                    "supports3DS"
+                ],
+                requiredBillingContactFields: [
+                    "postalAddress",
+                    "name"
+                ],
+                ApplePayContactField: [
+                    "email",
+                    "name",
+                    "phone",
+                    "postalAddress",
+                ],
+                total: {label: 'my merchant name', amount: 10}
+            };
+        
+            // Create the session
+            session = new ApplePaySession(3, payData);
+            // Attach a validation callback
+            session.onvalidatemerchant = event => {
+                const myMerchantId = "180000000742";
+                const myApplePayParams = {
+                    display_name: 'Test Display Name',
+                    referrer: referringUrl
+                };
+                
+                console.log(JSON.stringify(myApplePayParams))
+        
+                // Call the PayConex API to fetch a payment session object
+                fetch(`https://api-cert.payconex.net/api/v1/apple_pay/${myMerchantId}/get_apple_pay_session`, {
+                    method: 'POST',
+                    headers: new Headers({'content-type': 'application/json'}),
+                    body: JSON.stringify(myApplePayParams)
+                })
+                    .then(res => res.json()) // Parse response as JSON.
+                    .then(merchantSession => {
+                        //Log the session data to the console.
+                        console.log(merchantSession)
+        
+                        // Pass the session object to Apple
+                        session.completeMerchantValidation(merchantSession);
+                    })
+                    .catch(err => {
+                        console.error("Error fetching merchant session", err);
+                    });
+            };
+            // Attach a payment authorized callback
+            // This is the function that will be called after the user authenticates
+            session.onpaymentauthorized = applePayment => {
+                //For the example the token will be printed to the console in this case.
+                console.log(JSON.stringify(applePayment.payment.token))
+        
+                /*
+                // In this step you should send the token data to your own server.
+                // which should submit a payment request to QSAPI to complete the payment with the token.
+                fetch(`https://yourserver.com/your_path/`, {
+                    method: 'POST',
+                    body: JSON.stringify({'token': applePayment.payment.token})
+                }).then(transactionResponse => {
+                    // Tell Apple about the result of the transaction
+                    if(transactionResponse.approved) {
+                        session.completePayment({status: ApplePaySession.STATUS_SUCCESS});
+                    } else {
+                        session.completePayment({status: ApplePaySession.STATUS_FAILURE});
+                    }
+                })*/
+            }
+            // Actually begin the session
+            session.begin();
+        }
+    </script>
+
+</body>
