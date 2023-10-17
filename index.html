@@ -62,7 +62,7 @@
             // Attach a validation callback
             session.onvalidatemerchant = function(event) {
                 console.log(window.location.hostname);
-                var merchantSessionUrl = 'https://'+window.location.hostname+'/applepaysession'
+                var merchantSessionUrl = '/applepaysession'
                 console.log(merchantSessionUrl);
         
                 fetch(merchantSessionUrl, {
