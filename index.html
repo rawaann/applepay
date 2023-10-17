@@ -64,7 +64,7 @@
                 console.log(window.location.hostname);
                 var merchantSessionUrl = './applepaysession'
                 console.log(merchantSessionUrl);
-        
+                try {
                 fetch(merchantSessionUrl, {
                   method: 'POST',
                   headers: {
@@ -83,6 +83,10 @@
                 .catch(function(error) {
                   console.log(error)
                 })
+                }
+                catch(err) {
+                  console.log(err)
+                }
             };
             // Attach a payment authorized callback
             // This is the function that will be called after the user authenticates
