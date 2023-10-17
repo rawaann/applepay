@@ -32,7 +32,7 @@ app.post('/apple_pay_session', function(req, res) {
           console.log(body);
           delete body.displayName;
         }
-    
+        console.log(body);
         res.send(body);
       });
 });
