@@ -5,12 +5,14 @@
   "main": "index.html",
   "scripts": {
     "start": "node app.js",
+    "build:staging": "env-cmd -f .env.staging npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
     "node": "^20.7.0"
