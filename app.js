@@ -12,7 +12,7 @@ app.listen(process.env.PORT, function(){
 })
 
 app.get('/', function(req,res){
-    res.sendFile(__dirname + "/index.html")
+    // res.sendFile(__dirname + "/index.html")
 })
 
 app.post('/applepaysession', function(req, res) {
@@ -38,8 +38,8 @@ app.post('/applepaysession', function(req, res) {
         res.send(body);
       });
 });
-app.post('/', function(req, res){
+// app.post('/', function(req, res){
     
-})
+// })
 
 module.exports.app = app;
